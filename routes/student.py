@@ -5,6 +5,13 @@ from sqlalchemy.orm import Session
 import schemas, crud, models
 from database import get_db
 from auth import get_current_user
+from pydantic import BaseModel
+
+class Student(BaseModel):
+    id: int
+    name: str
+    age: int
+    email: str
 
 router = APIRouter(prefix="/students", tags=["Students"])
 
@@ -20,10 +27,10 @@ def delete_student(student_id: int, db: Session = Depends(get_db), user: models.
         raise HTTPException(status_code=404, detail="Student not found")
     return student
 
-router = APIRouter(prefix="/students", tags=["students"])
+#router = APIRouter(prefix="/students", tags=["students"])
 
 # ✅ Create a student with validation
-@router.post("/", response_model=schemas.StudentResponse)
+@router.post("/students", response_model=schemas.StudentResponse)
 def create_student(student: schemas.StudentCreate, db: Session = Depends(get_db)):
     # Check if email is already registered
     existing_student = db.query(models.Student).filter(models.Student.email == student.email).first()

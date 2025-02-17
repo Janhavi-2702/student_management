@@ -9,6 +9,10 @@ app = FastAPI()
 app.include_router(student.router)
 app.include_router(courses.router)
 app.include_router(enrollments.router)
+from auth import router as auth_router  # Import the auth router
+
+# Add the router to the app
+app.include_router(auth_router)
 
 # Root endpoint
 @app.get("/")
